@@ -9,9 +9,32 @@
 <body>
 <h2>YUI Event Capture Test</h2>
 
+<button id="start">Start</button> - <button id="stop">Stop</button>
 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<div></div>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="../src/capture.js"></script>
+<script>
+
+(function() {
+    var Dom = YAHOO.util.Dom,
+        Event = YAHOO.util.Event;
+
+    Event.on(document, 'mousemove', function() {});
+ 
+    capture = new YAHOO.util.Capture();
+
+    Event.on('start', 'click', function(e) {
+        Event.stopEvent(e);
+        capture.start();
+    });
+    Event.on('stop', 'click', function(e) {
+        Event.stopEvent(e);
+        capture.stop();
+    });
+})();
+
+</script>
 </body>
 </html>
 
