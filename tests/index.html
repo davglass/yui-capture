@@ -4,6 +4,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>YUI Event Capture Test</title>
     <style>
+        #cursor {
+            display: none;
+            height: 16px;
+            width: 16px;
+            background-image: url( ../src/cursor.png );
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
     </style>
 </head>
 <body>
@@ -11,7 +20,7 @@
 
 <button id="start">Start</button> - <button id="stop">Stop</button>
 
-<div></div>
+<div id="cursor"></div>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="../src/capture.js"></script>
 <script>

@@ -27,23 +27,35 @@
         _started: null,
         _stopped: null,
         start: function() {
-            if (this._started) {
-                this.stop();
-            }
             this._started = (new Date()).getTime();
             this._stopped = null;
             console.log('start');
         },
         stop: function() {
+            this._stopped = (new Date()).getTime();
             console.log('stop');
-            console.log(this._getEvents());
-            this._started = null;
+            //console.log(this._getEvents());
+        },
+        play: function() {
+            var c = Dom.get('cursor');
+
+            c.style.display = 'block';
+            console.log('play');
+            var f = this._getEvents();
+            console.log(fires.length, ' :: ', f.length);
+            for (var i = 0; i < f.length; i++) {
+                if (fires[i][1] == 'mousemove') {
+                    console.log(fires[i][2][0]);
+                    c.style.top = fires[i][2][0].pageY + 'px';
+                    c.style.left = fires[i][2][0].pageX + 'px';
+                }
+            }
         },
         _getEvents: function() {
             var out = [];
             for (var i = 0; i < fires.length; i++) {
                 if (fires[i][3]) {
-                    if (fires[i][3] < this._started) {
+                    if ((fires[i][3] > this._started) && (fires[i][3] < this._stopped)) {
                         //console.log(fires[i][3]);
                         out.push(fires[i]);
                     }
