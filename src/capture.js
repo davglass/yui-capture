@@ -12,7 +12,6 @@
     Event._simpleAdd = function(el, sType, wrappedFn, capture) {
         listeners.push(arguments);
         var fn = function() {
-            //console.log(el, sType, arguments);
             fires.push([el, sType, arguments, (new Date()).getTime()]);
             wrappedFn.call();
         };
@@ -21,34 +20,51 @@
     
 
     var Capture = function() {
+        this.cursor = Dom.get('cursor');
     };
 
     var proto = {
         _started: null,
         _stopped: null,
+        _handleMouseMove: function(e) {
+            this.cursor.style.top = e.pageY + 'px';
+            this.cursor.style.left = e.pageX + 'px';
+        },
+        _handleClick: function(e) {
+            var tar = Event.getTarget(e);
+
+            try {
+                tar.focus();
+            } catch (e) {};
+            YAHOO.util.UserAction.mousedown(tar, e);
+            YAHOO.util.UserAction.mouseup(tar, e);
+            YAHOO.util.UserAction.click(tar, e);
+        },
         start: function() {
             this._started = (new Date()).getTime();
             this._stopped = null;
-            console.log('start');
         },
         stop: function() {
             this._stopped = (new Date()).getTime();
-            console.log('stop');
-            //console.log(this._getEvents());
         },
         play: function() {
-            var c = Dom.get('cursor');
 
-            c.style.display = 'block';
-            console.log('play');
-            var f = this._getEvents();
-            console.log(fires.length, ' :: ', f.length);
+            this.cursor.style.display = 'block';
+            var f = this._getEvents(),
+                index = 0,
+                method = null;
+
             for (var i = 0; i < f.length; i++) {
-                if (fires[i][1] == 'mousemove') {
-                    console.log(fires[i][2][0]);
-                    c.style.top = fires[i][2][0].pageY + 'px';
-                    c.style.left = fires[i][2][0].pageX + 'px';
+                index = (f[i][3] - this._started);
+                switch (f[i][1]) {
+                    case 'click':
+                        method = this._handleClick;
+                        break;
+                    case 'mousemove':
+                        method = this._handleMouseMove;
+                        break;
                 }
+                YAHOO.lang.later(index, this, method, [f[i][2][0]]);
             }
         },
         _getEvents: function() {
@@ -56,7 +72,6 @@
             for (var i = 0; i < fires.length; i++) {
                 if (fires[i][3]) {
                     if ((fires[i][3] > this._started) && (fires[i][3] < this._stopped)) {
-                        //console.log(fires[i][3]);
                         out.push(fires[i]);
                     }
                 }

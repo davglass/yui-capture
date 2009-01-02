@@ -6,9 +6,9 @@
     <style>
         #cursor {
             display: none;
-            height: 16px;
-            width: 16px;
-            background-image: url( ../src/cursor.png );
+            height: 21px;
+            width: 12px;
+            background-image: url( ../src/cursor.gif );
             top: 0;
             left: 0;
             position: absolute;
@@ -16,12 +16,17 @@
     </style>
 </head>
 <body>
+<div id="cursor"></div>
+
 <h2>YUI Event Capture Test</h2>
 
-<button id="start">Start</button> - <button id="stop">Stop</button>
+<button id="start">Start</button> - <button id="stop" disabled>Stop</button> - <button id="play" disabled>Play</button>
 
-<div id="cursor"></div>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<p>Test <a href="#" id="test1">Test Link #1 Click</a></p>
+<p>Test <a href="#" id="test2">Test Link #2 Click</a></p>
+
+
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js&2.6.0/build/logger/logger-min.js&2.6.0/build/yuitest/yuitest-min.js"></script>
 <script type="text/javascript" src="../src/capture.js"></script>
 <script>
 
@@ -30,16 +35,36 @@
         Event = YAHOO.util.Event;
 
     Event.on(document, 'mousemove', function() {});
+
+    Event.on('test1', 'click', function(e) {
+        Event.stopEvent(e);
+        console.log('Link #1 Clicked..');
+    });
+ 
+    Event.on('test2', 'click', function(e) {
+        Event.stopEvent(e);
+        console.log('Link #2 Clicked..');
+    });
  
     capture = new YAHOO.util.Capture();
 
     Event.on('start', 'click', function(e) {
         Event.stopEvent(e);
         capture.start();
+        this.disabled = true;
+        Dom.get('stop').disabled = false;
     });
     Event.on('stop', 'click', function(e) {
         Event.stopEvent(e);
         capture.stop();
+        this.disabled = true;
+        Dom.get('play').disabled = false;
+    });
+    Event.on('play', 'click', function(e) {
+        Event.stopEvent(e);
+        capture.play();
+        this.disabled = true;
+        Dom.get('start').disabled = false;
     });
 })();
 
