@@ -22,8 +22,10 @@
 
 <button id="start">Start</button> - <button id="stop" disabled>Stop</button> - <button id="play" disabled>Play</button>
 
-<p>Test <a href="#" id="test1">Test Link #1 Click</a></p>
-<p>Test <a href="#" id="test2">Test Link #2 Click</a></p>
+<p>Test #1: <a href="#" id="test1">Test Link #1 Click</a></p>
+<p>Test #2: <a href="#" id="test2">Test Link #2 Click</a></p>
+<p>Test #3: <button id="test3">Test Button #1 Click</button></p>
+<p>Test #4: <input type="text" value="" size="20" id="test4"></p>
 
 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js&2.6.0/build/logger/logger-min.js&2.6.0/build/yuitest/yuitest-min.js"></script>
@@ -38,12 +40,21 @@
 
     Event.on('test1', 'click', function(e) {
         Event.stopEvent(e);
-        console.log('Link #1 Clicked..');
+        //console.log('Link #1 Clicked..');
     });
  
     Event.on('test2', 'click', function(e) {
         Event.stopEvent(e);
-        console.log('Link #2 Clicked..');
+        //console.log('Link #2 Clicked..');
+    });
+ 
+    Event.on('test3', 'click', function(e) {
+        Event.stopEvent(e);
+        //console.log('Button #1 Clicked..');
+    });
+ 
+    Event.on('test4', 'keypress', function(e) {
+        //console.log('Input keypress..', e);
     });
  
     capture = new YAHOO.util.Capture();

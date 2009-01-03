@@ -40,6 +40,16 @@
             YAHOO.util.UserAction.mouseup(tar, e);
             YAHOO.util.UserAction.click(tar, e);
         },
+        _handleKeyPress: function(e) {
+            var tar = Event.getTarget(e);
+
+            try {
+                tar.focus();
+            } catch (e) {};
+            YAHOO.util.UserAction.keyup(tar, e);
+            YAHOO.util.UserAction.keydown(tar, e);
+            YAHOO.util.UserAction.keypress(tar, e);
+        },
         start: function() {
             this._started = (new Date()).getTime();
             this._stopped = null;
@@ -57,6 +67,9 @@
             for (var i = 0; i < f.length; i++) {
                 index = (f[i][3] - this._started);
                 switch (f[i][1]) {
+                    case 'keypress':
+                        method = this._handleKeyPress;
+                        break;
                     case 'click':
                         method = this._handleClick;
                         break;
